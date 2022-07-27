@@ -2,41 +2,33 @@ import {useState} from "react";
 import Cell from "./Cell";
 import './Board.css';
 
-/** Game board of Lights out.
- * Properties:
- * - nrows: number of rows of board
- * - ncols: number of cols of board
- * - chanceLightStartsOn: float, chance any cell is lit at start of game
- *
- * State:
- * - hasWon: boolean, true when board is all off
- * - board: array-of-arrays of true/false
- *
- *    For this board:
- *       .  .  .
- *       O  O  .     (where . is off, and O is on)
- *       .  .  .
- *
- *    This would be: [[f, f, f], [t, t, f], [f, f, f]]
- *
- *  This should render an HTML table of individual <Cell /> components.
- *  This doesn't handle any clicks --- clicks are on individual cells
- **/
 function Board(props) {
-  const [state, setState] = useState({
+  const {nrows, ncols, chanceLightStartsOn} = props
 
-  });
-
+  // creates array of arrays of true / false for board
   const createBoard = function() {
     let board = [];
-    // TODO: create array-of-arrays of true/false values
+    for (let y = 0; y < nrows; y ++) {
+      let row = [];
+      for (let x = 0; x < ncols; x ++) {
+        if (Math.random() < chanceLightStartsOn) {
+          row.push(true);
+        } else {
+          row.push(false);
+        }
+      }
+      board.push(row);
+    }
     return board
   };
 
-   /** handle changing a cell: update board & determine if winner */
+  const [state, setState] = useState({
+    hasWon: false,
+    board: createBoard()
+  });
 
+   /** handle changing a cell: update board & determine if winner */
    const flipCellsAround = function(coord) {
-    let {ncols, nrows} = props;
     let board = state.board;
     let [y, x] = coord.split("-").map(Number);
 
@@ -55,16 +47,22 @@ function Board(props) {
     // setState({board, hasWon});
   }
 
+  const tableBoard = [];
+  for (let y = 0; y < nrows; y ++) {
+    let row = [];
+    for (let x = 0; x < ncols; x ++) {
+      let coord = `${y}-${x}`;
+      row.push(<Cell key={coord} isLit={state.board[y][x]} />);
+    }
+    tableBoard.push(<tr key={y} >{row}</tr>);
+  }
+
   // if the game is won, just show a winning msg & render nothing else TODO
-  // make table board TODO
+  
   return (
     <table className="Board">
       <tbody>
-        <tr>
-          <Cell isLit={false}/>
-          <Cell isLit={true}/>
-          <Cell isLit={false}/>
-        </tr>
+        {tableBoard}
       </tbody>
     </table>
   );
