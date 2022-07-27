@@ -52,34 +52,51 @@ function Board(props) {
     setState({board, hasWon});
   }
 
-  //render just a winning message instead of board if win
-  if (state.hasWon) {
-    return <h2>You won!</h2>;
-  }
-
-  //otherwise, logic to rend the board
-  const tableBoard = [];
-  for (let y = 0; y < nrows; y ++) {
-    let row = [];
-    for (let x = 0; x < ncols; x ++) {
-      let coord = `${y}-${x}`;
-      row.push(
-        <Cell 
-          key={coord} 
-          isLit={state.board[y][x]} 
-          flipCellsAroundMe={() => flipCellsAround(coord)}/>
-      );
+  // render board if all cells are false (hasWon = true)
+  const makeTable = function() {
+    const tableBoard = [];
+    for (let y = 0; y < nrows; y ++) {
+      let row = [];
+      for (let x = 0; x < ncols; x ++) {
+        let coord = `${y}-${x}`;
+        row.push(
+          <Cell 
+            key={coord} 
+            isLit={state.board[y][x]} 
+            flipCellsAroundMe={() => flipCellsAround(coord)}/>
+        );
+      }
+      tableBoard.push(<tr key={y} >{row}</tr>);
     }
-    tableBoard.push(<tr key={y} >{row}</tr>);
-  }
 
+    return (
+      <table className="Board">
+        <tbody>
+          {tableBoard}
+        </tbody>
+      </table>
+    );
+  };
+
+  
   return (
-    <table className="Board">
-      <tbody>
-        {tableBoard}
-      </tbody>
-    </table>
-  );
+    <div>
+      {state.hasWon ? (
+        <div className='winner'>
+          <span className='neon-orange'>YOU</span>
+          <span className='neon-blue'>WIN!</span>
+        </div>
+      ) : (
+        <div>
+            <div className='Board-title'>
+              <div className='neon-orange'>Lights</div>
+              <div className='neon-blue'>Out</div>
+            </div>
+            {makeTable()}
+          </div>
+      )}
+    </div>
+  )
 }
 
 export default Board;
