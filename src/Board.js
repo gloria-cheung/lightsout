@@ -28,37 +28,51 @@ function Board(props) {
   });
 
    /** handle changing a cell: update board & determine if winner */
-   const flipCellsAround = function(coord) {
+  const flipCellsAround = function(coord) {
+    console.log("flipping", coord)
     let board = state.board;
     let [y, x] = coord.split("-").map(Number);
 
     function flipCell(y, x) {
       // if this coord is actually on board, flip it
-
       if (x >= 0 && x < ncols && y >= 0 && y < nrows) {
         board[y][x] = !board[y][x];
       }
-   };
-     // TODO: flip this cell and the cells around it
+    };
 
-    // win when every cell is turned off
-    // TODO: determine is the game has been won
+    flipCell(y, x); //flip initial cell
+    flipCell(y, x - 1); // flip left cell
+    flipCell(y, x + 1); // flip right cell
+    flipCell(y + 1, x); // flip top cell
+    flipCell(y - 1, x); // flip botton cell
 
-    // setState({board, hasWon});
+    //check to see if hasWon is true or false depending on if all cells are false
+    let hasWon = board.every(row => row.every(cell => cell === false));
+
+    setState({board, hasWon});
   }
 
+  //render just a winning message instead of board if win
+  if (state.hasWon) {
+    return <h2>You won!</h2>;
+  }
+
+  //otherwise, logic to rend the board
   const tableBoard = [];
   for (let y = 0; y < nrows; y ++) {
     let row = [];
     for (let x = 0; x < ncols; x ++) {
       let coord = `${y}-${x}`;
-      row.push(<Cell key={coord} isLit={state.board[y][x]} />);
+      row.push(
+        <Cell 
+          key={coord} 
+          isLit={state.board[y][x]} 
+          flipCellsAroundMe={() => flipCellsAround(coord)}/>
+      );
     }
     tableBoard.push(<tr key={y} >{row}</tr>);
   }
 
-  // if the game is won, just show a winning msg & render nothing else TODO
-  
   return (
     <table className="Board">
       <tbody>
