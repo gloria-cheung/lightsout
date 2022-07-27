@@ -4,7 +4,6 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <h1>LightsOut Game</h1>
       <Board 
         nrows={5} 
         ncols={5}
