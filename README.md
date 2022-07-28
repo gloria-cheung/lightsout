@@ -5,7 +5,7 @@ A lights out application created with Create React App where the goal of the gam
 ## Final Product
 
 Demo Video:
-!["lose"](./public/lightsoutdemo.gif)
+!["demo"](./public/lightsoutdemo.gif)
 
 Winning View:
 !["win"](./public/winning.png)
