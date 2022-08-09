@@ -1,13 +1,15 @@
 # Lights Out Project
 
-A lights out application created with Create React App where the goal of the game is to turn off all the lights. With every click on a block, it toggles the block and immediate neighbors on. 
+A lights out application created with Create React App where the goal of the game is to turn off all the lights. With every click on a block, it toggles the block and immediate neighbors on.
 
 ## Final Product
 
-Demo Video:
+### Demo Video:
+
 !["demo"](./public/lightsoutdemo.gif)
 
-Winning View:
+### Winning View:
+
 !["win"](./public/winning.png)
 
 ## Getting Started
